@@ -1,4 +1,4 @@
-﻿using System.Transactions;
+using System.Transactions;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using yhctapp.Model.Enitity;
@@ -19,8 +19,8 @@ namespace yhctapp.Data
 
         public DbSet<RolePermission> RolePermissions { get; set; }
         // bảng danh mục dịch vụ 
-
-
+        public DbSet<SecurityGuardShiftReport> SecurityGuardShiftReports { get; set; }
+        public DbSet<DriverShiftReport> DriverShiftReports { get; set; }
 
         #endregion
 
@@ -30,6 +30,8 @@ namespace yhctapp.Data
             // table name
             builder.Entity<Catogerymenu>().ToTable("Catogerymenu");
             builder.Entity<Menu>().ToTable("Menus");
+            builder.Entity<SecurityGuardShiftReport>().ToTable("SecurityGuardShiftReports");
+            builder.Entity<DriverShiftReport>().ToTable("DriverShiftReports");
             // dịch vụ
            
             // ===== menu cha =====
@@ -63,7 +65,7 @@ namespace yhctapp.Data
                 entity.Property(x => x.Id_RolePermission).ValueGeneratedOnAdd();
                 entity.Property(x => x.RoleId).IsRequired();
                 entity.HasOne(x => x.Approle).WithMany(x => x.RolePermissions).HasForeignKey(x => x.RoleId).OnDelete(DeleteBehavior.Cascade);
-
+                entity.HasOne(x => x.Menu).WithMany().HasForeignKey(x => x.Id_menu).OnDelete(DeleteBehavior.Cascade);
             });
 
           

@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using yhctapp.Model.DTO;
 using yhctapp.Model.DTO.UserDTO;
 using yhctapp.Model.Enitity;
@@ -22,6 +22,9 @@ namespace yhctapp.Helpper
             CreateMap<ApplicationUser,UserVM>().ReverseMap();
             CreateMap<UserVM, ApplicationUser>().ForMember(dest => dest.Id, opt => opt.Ignore());
      
+            // Shift Reports (Map to themselves for BaseCrudController)
+            CreateMap<DriverShiftReport, DriverShiftReport>();
+            CreateMap<SecurityGuardShiftReport, SecurityGuardShiftReport>();
 
 
 

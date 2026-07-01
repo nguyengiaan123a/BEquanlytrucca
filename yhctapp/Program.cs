@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -13,6 +13,7 @@ using yhctapp.Services;
 using yhctapp.Services.Interface;
 using yhctapp.Services.Interface.Role;
 using yhctapp.Services.Responsive;
+using yhctapp.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,6 +22,7 @@ var builder = WebApplication.CreateBuilder(args);
 // =======================================================
 builder.Services.AddMemoryCache(); // Phải khai báo Cache đầu tiên
 builder.Services.AddControllers();
+builder.Services.AddSignalR();
 
 builder.Services.Configure<ApiBehaviorOptions>(options =>
 {
@@ -121,6 +123,9 @@ builder.Services.AddScoped<IRolePermisson, PermissonResponsive>();
 builder.Services.AddScoped<IAuthorization, AuthorizationResponsive>();
 builder.Services.AddScoped<IImageService, ImageServiceResponsive>();
 
+builder.Services.AddScoped<ISecurityGuardShiftReport, SecurityGuardShiftReportResponsive>();
+builder.Services.AddScoped<IDriverShiftReport, DriverShiftReportResponsive>();
+
 
 // =======================================================
 // 5. CORS (Cho phép React/Mobile gọi API)
@@ -189,5 +194,6 @@ app.UseAuthentication(); // Bắt buộc phải nằm TRƯỚC Authorization
 app.UseAuthorization();
 
 app.MapControllers();
+app.MapHub<ShiftReportHub>("/shifthub");
 
 app.Run();

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using yhctapp.Data;
 
@@ -11,9 +12,11 @@ using yhctapp.Data;
 namespace yhctapp.Migrations
 {
     [DbContext(typeof(MyDbcontext))]
-    partial class MyDbcontextModelSnapshot : ModelSnapshot
+    [Migration("20260619025905_AddSecurityGuardShiftReport")]
+    partial class AddSecurityGuardShiftReport
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -272,117 +275,6 @@ namespace yhctapp.Migrations
                     b.ToTable("Catogerymenu", (string)null);
                 });
 
-            modelBuilder.Entity("yhctapp.Model.Enitity.DriverShiftReport", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("AdminWorkCount")
-                        .HasColumnType("int");
-
-                    b.Property<string>("AirConditioner")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Battery")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("BrakesAndSteering")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Coolant")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Dashcam")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Diesel")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("DriverName")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
-                    b.Property<int>("EndingMileage")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ExteriorInspection")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FireExtinguisherAndFirstAid")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Gasoline")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("HospitalTransferCount")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Incidents")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("InspectionCertificate")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("InsuranceCertificate")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("JackAndWrench")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("LicensePlate")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("LightsAndWipers")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("MotorOil")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("OutsideEmergencyCount")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Oxygen")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PriorityCertificate")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("RegistrationPaper")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ShiftType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SpareTire")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("StartingMileage")
-                        .HasColumnType("int");
-
-                    b.Property<string>("TirePressure")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("VehicleHygiene")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("DriverShiftReports", (string)null);
-                });
-
             modelBuilder.Entity("yhctapp.Model.Enitity.Menu", b =>
                 {
                     b.Property<int>("Id")
@@ -468,7 +360,7 @@ namespace yhctapp.Migrations
                     b.Property<string>("HandoverTasks")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsConfirmed")
+                    b.Property<bool>("IsNightShift")
                         .HasColumnType("bit");
 
                     b.Property<string>("ParkingTasks")
@@ -481,7 +373,6 @@ namespace yhctapp.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Proposals")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SecurityTasks")
@@ -493,10 +384,6 @@ namespace yhctapp.Migrations
                         .HasColumnType("nvarchar(200)");
 
                     b.Property<string>("ShiftPositions")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ShiftType")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<TimeSpan>("StartTime")

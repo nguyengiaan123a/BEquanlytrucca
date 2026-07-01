@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using yhctapp.Data;
 
@@ -11,9 +12,11 @@ using yhctapp.Data;
 namespace yhctapp.Migrations
 {
     [DbContext(typeof(MyDbcontext))]
-    partial class MyDbcontextModelSnapshot : ModelSnapshot
+    [Migration("20260619033108_AddDriverShiftReport")]
+    partial class AddDriverShiftReport
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -468,7 +471,7 @@ namespace yhctapp.Migrations
                     b.Property<string>("HandoverTasks")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsConfirmed")
+                    b.Property<bool>("IsNightShift")
                         .HasColumnType("bit");
 
                     b.Property<string>("ParkingTasks")
@@ -481,7 +484,6 @@ namespace yhctapp.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Proposals")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SecurityTasks")
@@ -493,10 +495,6 @@ namespace yhctapp.Migrations
                         .HasColumnType("nvarchar(200)");
 
                     b.Property<string>("ShiftPositions")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ShiftType")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<TimeSpan>("StartTime")
