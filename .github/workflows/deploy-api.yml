@@ -20,7 +20,7 @@ jobs:
     - name: 📝 Cấu hình Chuỗi kết nối Database cho Server
       shell: powershell
       run: |
-        $configPath = "./appsettings.json"
+        $configPath = "./yhctapp/appsettings.json"
         $json = Get-Content -Raw -Path $configPath | ConvertFrom-Json
         $json.ConnectionStrings.DefaultConnection = "Server=WIN-HRB0NEE9SOL\SQLEXPRESS;Database=Dbquanlycatruc;Trusted_Connection=True;TrustServerCertificate=True"
         $json | ConvertTo-Json -Depth 20 | Out-File -FilePath $configPath -Encoding utf8
