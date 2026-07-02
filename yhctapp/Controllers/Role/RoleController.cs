@@ -18,7 +18,7 @@ namespace yhctapp.Controllers.Role
             _role = role;
         }
 
-        // 1. Lấy danh sách Role (Phân trang + Tìm kiếm)  test 1 
+        // 1. Lấy danh sách Role (Phân trang + Tìm kiếm)  test 1 2 
         [HttpGet]
         public async Task<IActionResult> GetAll(int page, int pageSize, string search = "")
         {
