@@ -1,0 +1,56 @@
+name: Deploy .NET API to IIS
+
+on:
+  push:
+    branches: ["master"]
+
+jobs:
+  build-and-deploy:
+    runs-on: [self-hosted, Windows, abc] # Đã fix lại label
+
+    steps:
+    - name: 📥 Tải source code mới nhất về Server
+      uses: actions/checkout@v4
+
+    - name: 🛠️ Cài đặt môi trường .NET 8
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0.x'
+
+    - name: 📝 Cấu hình Chuỗi kết nối Database cho Server
+      shell: powershell
+      run: |
+        $configPath = "./appsettings.json"
+        $json = Get-Content -Raw -Path $configPath | ConvertFrom-Json
+        $json.ConnectionStrings.DefaultConnection = "Server=WIN-HRB0NEE9SOL\SQLEXPRESS;Database=Dbquanlycatruc;Trusted_Connection=True;TrustServerCertificate=True"
+        $json | ConvertTo-Json -Depth 20 | Out-File -FilePath $configPath -Encoding utf8
+        Write-Host "Da tu dong chuyen Connection String sang WIN-HRB0NEE9SOL\SQLEXPRESS"
+
+    - name: ⚙️ Build và Publish code Backend
+      run: dotnet publish -c Release -o ./publish_output
+
+    - name: 🛑 Đặt app_offline.htm để tự động nhả file lock trên IIS
+      shell: powershell
+      run: |
+        $targetDir = "C:\inetpub\wwwroot\Bequanlycatruc"
+        if (!(Test-Path -Path $targetDir)) { New-Item -ItemType Directory -Force -Path $targetDir }
+        
+        $offlinePath = "$targetDir\app_offline.htm"
+        # Tạo file offline để IIS tự động ngắt kết nối và nhả file
+        Set-Content -Path $offlinePath -Value "<h1>Hệ thống đang được cập nhật, vui lòng quay lại sau ít phút...</h1>" -Encoding utf8
+        Start-Sleep -Seconds 3 # Chờ vài giây để IIS nhận diện và tắt tiến trình
+
+    - name: 🚀 Copy file đè lên thư mục web IIS
+      shell: powershell
+      run: |
+        # Copy toàn bộ file publish sang, trừ file app_offline (nếu vô tình có trong source)
+        Copy-Item -Path ./publish_output/* -Destination "C:\inetpub\wwwroot\Bequanlycatruc" -Recurse -Force
+
+    - name: 🟢 Xóa app_offline.htm để khởi động lại API
+      shell: powershell
+      run: |
+        $offlinePath = "C:\inetpub\wwwroot\Bequanlycatruc\app_offline.htm"
+        if (Test-Path $offlinePath) {
+            Remove-Item -Path $offlinePath -Force
+        }
+        Write-Host "Da xoa app_offline.htm, ung dung da san sang phuc vu."
