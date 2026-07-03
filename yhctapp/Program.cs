@@ -14,12 +14,25 @@ using yhctapp.Services.Interface;
 using yhctapp.Services.Interface.Role;
 using yhctapp.Services.Responsive;
 using yhctapp.Hubs;
+using Microsoft.AspNetCore.DataProtection;
+using System.IO;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // =======================================================
 // 1. CORE SERVICES (Bộ nhớ, Controller, Validation)
 // =======================================================
+// Xử lý lỗi: Cannot open log for source '.NET Runtime' (do EventLog mặc định không đủ quyền trên IIS / Runner)
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
+builder.Logging.AddDebug();
+
+// Xử lý cảnh báo: Using an in-memory repository (lưu key vào thư mục 'keys' để không bị mất khi khởi động lại)
+var keysDirectory = new DirectoryInfo(Path.Combine(builder.Environment.ContentRootPath, "keys"));
+builder.Services.AddDataProtection()
+    .PersistKeysToFileSystem(keysDirectory)
+    .SetApplicationName("yhctapp");
+
 builder.Services.AddMemoryCache(); // Phải khai báo Cache đầu tiên
 builder.Services.AddControllers();
 builder.Services.AddSignalR();
